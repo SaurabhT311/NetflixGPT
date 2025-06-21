@@ -27,11 +27,19 @@ const LogIn = () => {
               {isSignInForm ? "Sign In" : "Sign Up"}
             </h1>
           </div>
+          {!isSignInForm && (
+            <input
+              className="py-6 px-2 text-md h-[40px] text-white bg-[rgba(22,22,22,0.7)] w-full border-2 focus:outline-[rgba(128,128,128,0.7)] focus:ring-0 border-[rgba(128,128,128,0.7)] rounded-sm"
+              type="text"
+              placeholder="Full Name"
+            />
+          )}
           <input
             className="py-6 px-2 text-md h-[40px] text-white bg-[rgba(22,22,22,0.7)] w-full border-2 focus:outline-[rgba(128,128,128,0.7)] focus:ring-0 border-[rgba(128,128,128,0.7)] rounded-sm"
             type="email"
             placeholder="Email-Address"
           />
+
           <input
             className="py-6 px-2 text-md text-white h-[40px] bg-[rgba(22,22,22,0.7)] w-full border-2 focus:outline-[rgba(128,128,128,0.7)] focus:ring-0 border-[rgba(128,128,128,0.7)] rounded-sm"
             type="password"
