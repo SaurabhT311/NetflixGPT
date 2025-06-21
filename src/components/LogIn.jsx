@@ -1,8 +1,61 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { validForm } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const nameRef = useRef(null);
+  const [errorMsg, setErrMsg] = useState("");
+
+  const handleButtonClick = () => {
+    const name = isSignInForm ? "" : nameRef.current.value;
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    const message = validForm(name, email, password, isSignInForm);
+    setErrMsg(message);
+
+    if (!message) return;
+
+    if (!isSignInForm) {
+      //sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          setErrMsg(error.code + "-" + error.message);
+        });
+    } else {
+      //sign in logic
+      signInWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          if (error.code === "auth/invalid-credential") {
+            setErrMsg("Invalid Login Crendentials");
+          } else if (error.code === "auth/too-many-requests") {
+            setErrMsg("Too many requests. Please try again later");
+          }
+        });
+    }
+  };
 
   const handleToggleSignIn = () => {
     setIsSignInForm(!isSignInForm);
@@ -21,7 +74,10 @@ const LogIn = () => {
         <div className="absolute bg-black opacity-30 w-full h-full"></div>
       </div>
       <div className="flex items-center justify-center w-[100%] bg-color">
-        <form className="relative px-12 py-16 bg-[rgba(0,0,0,0.7)] min-w-[450px] flex flex-col gap-4 rounded-sm text-white">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="relative px-12 py-16 bg-[rgba(0,0,0,0.7)] max-w-[450px] flex flex-col gap-4 rounded-sm text-white"
+        >
           <div>
             <h1 className="text-3xl font-bold pb-4">
               {isSignInForm ? "Sign In" : "Sign Up"}
@@ -31,21 +87,28 @@ const LogIn = () => {
             <input
               className="py-6 px-2 text-md h-[40px] text-white bg-[rgba(22,22,22,0.7)] w-full border-2 focus:outline-[rgba(128,128,128,0.7)] focus:ring-0 border-[rgba(128,128,128,0.7)] rounded-sm"
               type="text"
+              ref={nameRef}
               placeholder="Full Name"
             />
           )}
           <input
             className="py-6 px-2 text-md h-[40px] text-white bg-[rgba(22,22,22,0.7)] w-full border-2 focus:outline-[rgba(128,128,128,0.7)] focus:ring-0 border-[rgba(128,128,128,0.7)] rounded-sm"
             type="email"
+            ref={emailRef}
             placeholder="Email-Address"
           />
 
           <input
             className="py-6 px-2 text-md text-white h-[40px] bg-[rgba(22,22,22,0.7)] w-full border-2 focus:outline-[rgba(128,128,128,0.7)] focus:ring-0 border-[rgba(128,128,128,0.7)] rounded-sm"
             type="password"
+            ref={passwordRef}
             placeholder="Password"
           />
-          <button className="bg-[rgb(229,9,20)] p-2 w-full weight-bold rounded-sm">
+          <p className="text-red-500 text-sm w-half">{errorMsg}</p>
+          <button
+            className="bg-[rgb(229,9,20)] p-2 w-[350px] weight-bold rounded-sm cursor-pointer"
+            onClick={handleButtonClick}
+          >
             {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
           <div>
