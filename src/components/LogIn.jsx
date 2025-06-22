@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -13,6 +14,8 @@ const LogIn = () => {
   const passwordRef = useRef(null);
   const nameRef = useRef(null);
   const [errorMsg, setErrMsg] = useState("");
+  const navigate = useNavigate();
+
 
   const handleButtonClick = () => {
     const name = isSignInForm ? "" : nameRef.current.value;
@@ -33,6 +36,7 @@ const LogIn = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          navigate("/");
         })
         .catch((error) => {
           setErrMsg(error.code + "-" + error.message);
@@ -46,6 +50,7 @@ const LogIn = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          navigate("/browse");
         })
         .catch((error) => {
           if (error.code === "auth/invalid-credential") {
