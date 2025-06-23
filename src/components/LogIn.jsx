@@ -4,9 +4,12 @@ import { validForm } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../utils/userSlice";
 
 const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -15,7 +18,7 @@ const LogIn = () => {
   const nameRef = useRef(null);
   const [errorMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
 
   const handleButtonClick = () => {
     const name = isSignInForm ? "" : nameRef.current.value;
@@ -32,14 +35,21 @@ const LogIn = () => {
       createUserWithEmailAndPassword(
         auth,
         emailRef.current.value,
-        passwordRef.current.value
+        passwordRef.current.value,
+        nameRef.current.value
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          navigate("/");
+          updateProfile(user, {
+            displayName: nameRef.current.value,
+          }).then(() => {
+            navigate("/");
+          });
         })
         .catch((error) => {
-          setErrMsg(error.code + "-" + error.message);
+          if (error.code === "auth/email-already-in-use") {
+            setErrMsg("Email already in use");
+          }
         });
     } else {
       //sign in logic
@@ -50,6 +60,14 @@ const LogIn = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          const { uid, email, displayName } = user;
+          dispatch(
+            setUser({
+              uid: uid,
+              email: email,
+              displayName: displayName,
+            })
+          );
           navigate("/browse");
         })
         .catch((error) => {
@@ -69,7 +87,7 @@ const LogIn = () => {
 
   return (
     <div className="flex h-screen">
-      <Header />
+      <Header isSignInForm={isSignInForm} />
       <div className="flex">
         <img
           className=" w-full h-[100vh] object-cover absolute"

@@ -26,13 +26,12 @@ const Body = () => {
       console.log("user", user);
       if (user) {
         // User is signed in,
-        const { uid, email, displayName, name } = user;
+        const { uid, email, displayName } = user;
         dispatch(
           setUser({
             uid: uid,
             email: email,
             displayName: displayName,
-            name: name,
           })
         );
       } else {
