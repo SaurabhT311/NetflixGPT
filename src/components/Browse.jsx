@@ -13,7 +13,6 @@ const Browse = () => {
     try {
       const response = await getNowPlayingMovie();
       dispatch(setNowPlaying(response));
-      console.log("response", response);
     } catch (error) {}
   };
 

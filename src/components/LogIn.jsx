@@ -14,7 +14,6 @@ import { IMGBackgroundImg } from "../assets";
 import { signOut } from "firebase/auth";
 
 const LogIn = ({ isSignInForm }) => {
-  // const [isSignInForm, setIsSignInForm] = useState(true);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const nameRef = useRef(null);
@@ -48,7 +47,6 @@ const LogIn = ({ isSignInForm }) => {
         .then((userCredential) => {
           dispatch(setNewAccount(true));
           const user = userCredential.user;
-          console.log("user", user);
           
           
           updateProfile(user, {

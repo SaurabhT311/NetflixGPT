@@ -8,7 +8,6 @@ const VideoComponent = () => {
 
   const mainMovie = movies[0];
   const { original_title, overview, id } = mainMovie || {};
-  console.log("mainMovie", original_title, id);
 
   return (
     <div>

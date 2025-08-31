@@ -14,14 +14,11 @@ const Header = ({ isSignInForm }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNewAccount = useSelector((state) => state.userSlice.new_account);
-  console.log("isNewAccount", isNewAccount);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("user", user);
       if (user) {
         if (isNewAccount) {
-          log("isNewAccount25", isNewAccount);
           navigate("/sign-in");
           setIsNewlySignedUp(false);
         } else {

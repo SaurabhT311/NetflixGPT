@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTrailerVideo } from "../utils/movieSlice";
 
 const VideoBackground = ({ movieId }) => {
-  // const [movieTrailer, setMovieTrailer] = useState("");
   const { getMovieBackgroundTrailer } = useMovies();
   const dispatch = useDispatch();
   const trailerVideo = useSelector((state) => state.movieSlice?.trailer_video);
