@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useOutsideClick from "../utils/useOutsideClick";
+import useOutsideClick from "../hooks/useOutsideClick";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
@@ -16,7 +16,7 @@ const MyProfile = ({ userPopup, setUserPopup, popupRef }) => {
     signOut(auth)
       .then(() => {
         dispatch(removeUser())
-        navigate("/")
+        // navigate("/")
       })
       .catch((error) => {
         // An error happened.

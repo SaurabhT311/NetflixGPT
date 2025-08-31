@@ -9,18 +9,22 @@ import {
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "../utils/userSlice";
+import { setNewAccount, setUser } from "../utils/userSlice";
+import { IMGBackgroundImg } from "../assets";
+import { signOut } from "firebase/auth";
 
-const LogIn = () => {
-  const [isSignInForm, setIsSignInForm] = useState(true);
+const LogIn = ({ isSignInForm }) => {
+  // const [isSignInForm, setIsSignInForm] = useState(true);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const nameRef = useRef(null);
   const [errorMsg, setErrMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleButtonClick = () => {
+    setLoading(true);
     const name = isSignInForm ? "" : nameRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -28,7 +32,10 @@ const LogIn = () => {
     const message = validForm(name, email, password, isSignInForm);
     setErrMsg(message);
 
-    if (!message) return;
+    if (!message) {
+    // setLoading(false);
+    return;
+  }
 
     if (!isSignInForm) {
       //sign up logic
@@ -39,16 +46,24 @@ const LogIn = () => {
         nameRef.current.value
       )
         .then((userCredential) => {
+          dispatch(setNewAccount(true));
           const user = userCredential.user;
+          console.log("user", user);
+          
+          
           updateProfile(user, {
             displayName: nameRef.current.value,
           }).then(() => {
-            navigate("/");
+            // Force sign out after signup
+            dispatch(setNewAccount(true));
+            navigate("/sign-in");
           });
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
             setErrMsg("Email already in use");
+            setLoading(false);
+            dispatch(setNewAccount(false));
           }
         });
     } else {
@@ -59,6 +74,7 @@ const LogIn = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
+          dispatch(setNewAccount(false));
           const user = userCredential.user;
           const { uid, email, displayName } = user;
           dispatch(
@@ -68,6 +84,7 @@ const LogIn = () => {
               displayName: displayName,
             })
           );
+           
           navigate("/browse");
         })
         .catch((error) => {
@@ -76,13 +93,13 @@ const LogIn = () => {
           } else if (error.code === "auth/too-many-requests") {
             setErrMsg("Too many requests. Please try again later");
           }
+          setLoading(false);
         });
     }
   };
 
   const handleToggleSignIn = () => {
-    setIsSignInForm(!isSignInForm);
-    console.log("Sign In Form Toggled");
+    navigate(isSignInForm ? "/sign-up" : "/sign-in");
   };
 
   return (
@@ -91,7 +108,7 @@ const LogIn = () => {
       <div className="flex">
         <img
           className=" w-full h-[100vh] object-cover absolute"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/8200f588-2e93-4c95-8eab-ebba17821657/web/IN-en-20250616-TRIFECTA-perspective_9cbc87b2-d9bb-4fa8-9f8f-a4fe8fc72545_medium.jpg"
+          src={IMGBackgroundImg}
           alt="background-image"
         />
         <div className="absolute bg-black opacity-30 w-full h-full"></div>
@@ -132,7 +149,7 @@ const LogIn = () => {
             className="bg-[rgb(229,9,20)] p-2 w-[350px] weight-bold rounded-sm cursor-pointer"
             onClick={handleButtonClick}
           >
-            {isSignInForm ? "Sign In" : "Sign Up"}
+            {loading ? "Loading..." : isSignInForm ? "Sign In" : "Sign Up"}
           </button>
           <div>
             {isSignInForm ? (
