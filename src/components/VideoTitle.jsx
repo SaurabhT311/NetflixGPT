@@ -3,11 +3,11 @@ import { IMGMoreInfoIcon, IMGPlayIcon } from "../assets";
 
 const VideoTitle = ({ title, overview }) => {
   return (
-    <div className="w-screen aspect-video pt-[22%] px-20 absolute text-white bg-gradient-to-r from-black/70 to-transparent">
+    <div className="w-full aspect-video pt-[22%] px-20 absolute text-white bg-gradient-to-r from-black/70 to-transparent">
       <h1 className="text-6xl font-bold">{title}</h1>
       <p className="py-6 text-lg w-1/4">{overview}</p>
       <div className="flex gap-4 ">
-        <button className="bg-white justify-center flex gap-2 hover:bg-gray-300 text-black font-bold px-4 py-3 rounded cursor-pointer">
+        <button className="bg-white justify-center flex gap-2 w-[10%] hover:bg-gray-300 text-black font-bold px-4 py-3 rounded cursor-pointer">
           <img src={IMGPlayIcon} alt="play-icon" />
           Play
         </button>
