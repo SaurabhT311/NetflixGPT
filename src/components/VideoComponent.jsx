@@ -7,7 +7,7 @@ import MovieListComponent from "./MovieListComponent";
 const VideoComponent = () => {
   const movies = useSelector((state) => state.movieSlice?.now_playing) || [];
 
-  const mainMovie = movies[0];
+  const mainMovie = movies[1];
   const { original_title, overview, id } = mainMovie || {};
 
   return (

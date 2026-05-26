@@ -3,17 +3,18 @@ import MovieList from "./MovieList";
 import { useSelector } from "react-redux";
 
 const MovieListComponent = () => {
-  const movies = useSelector((state) => state.movieSlice?.now_playing) || [];
-  console.log("movies in MovieListComponent", movies);
+  const movies = useSelector((state) => state.movieSlice) || [];
 
   return (
     movies && (
-      <div>
-        <MovieList title={"Now Playing"} movies={movies} />
-        <MovieList title={"Trending"} movies={movies} />
-        <MovieList title={"Popular"} movies={movies} />
-        <MovieList title={"Upcoming Movies"} movies={movies} />
-        <MovieList title={"K-Dramas"} movies={movies} />
+      <div className=" bg-black">
+        <div className="-mt-46 pl-11 relative z-10">
+        <MovieList title={"Now Playing"} movies={movies?.now_playing} />
+        <MovieList title={"Top Rated"} movies={movies?.top_rated_movies} />
+        <MovieList title={"Popular"} movies={movies?.popular_movies} />
+        <MovieList title={"Upcoming Movies"} movies={movies?.upcoming_movies} />
+        <MovieList title={"Recommended Series"} movies={movies?.top_rated_series} />
+        </div>
       </div>
     )
   );
