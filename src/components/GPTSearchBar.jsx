@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useRef as useReactRef } from "react";
 import language from "../utils/langConstant";
 import { useDispatch, useSelector } from "react-redux";
-import ai from "../utils/openai";
+import geminiApi from "../utils/gemini";
 import { API_OPTIONS } from "../utils/constants";
 import { addGeminiMovieResult } from "../utils/gptSlice";
 
@@ -15,7 +15,7 @@ const GPTSearchBar = () => {
   const chatRef = useReactRef(null);
 
   useEffect(() => {
-    chatRef.current = ai.chats.create({
+    chatRef.current = geminiApi.chats.create({
       model: "gemini-3.5-flash",
     });
   }, []);
@@ -36,8 +36,6 @@ const GPTSearchBar = () => {
     try {
       const searchKeyword = searchTextRef.current.value;
 
-      console.log("Searching:", searchKeyword);
-
       const prompt = `
         You are a movie recommendation system.
 
@@ -57,14 +55,11 @@ const GPTSearchBar = () => {
       if (!geminiResult?.text) {
         //TODO: Error handling
       }
-      console.log("Gemini Response:", geminiResult.text);
       const geminiMovies = geminiResult.text.split(",");
-      console.log("Gemini Movies:", geminiMovies);
 
       //For each movie TMDB api will be called
       const movieData = geminiMovies.map((movie) => searchMovie(movie));
       const tmdbMovies = await Promise.all(movieData);
-      console.log("tmdbMovies", tmdbMovies);
       dispatch(addGeminiMovieResult({searchedMovie: geminiMovies, movieResults: tmdbMovies}));
       
     } catch (error) {
