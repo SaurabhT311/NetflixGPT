@@ -12,11 +12,11 @@ const GPTSearch = () => {
           src={IMGBackgroundImg}
           alt="background-image"
         />
-        <div className="absolute bg-black opacity-30 w-full h-full"></div>
+        <div className="fixed bg-black opacity-30 w-full h-full"></div>
       </div>
       <div className="relative z-10">
-      <GPTSearchBar />
-      <GPTMovieSuggestion />
+        <GPTSearchBar />
+        <GPTMovieSuggestion />
       </div>
     </div>
   );

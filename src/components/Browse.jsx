@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import { useDispatch, useSelector } from "react-redux";
 import { setNowPlaying, setPopularMovies, setTopRatedMovies, setTopRatedSeries, setUpcomingMovies } from "../utils/movieSlice";
@@ -9,7 +9,7 @@ import GPTSearch from "./GPTSearch";
 const Browse = () => {
   const dispatch = useDispatch();
   const { getNowPlayingMovie, myPopularMovies, topRatedMovies, upcomingMovies, topRatedSeriesList } = useMovies();
-  const showGptSearch = useSelector((state) => state.gptSlice?.showGptSearchView);
+  const showGptSearch = useSelector((state) => state.gptSlice.showGptSearchView);
 
   const handleNowPlayingMovie = async () => {
     try {
