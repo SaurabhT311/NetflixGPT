@@ -7,7 +7,7 @@ const MovieCard = ({ posterPath }) => {
   }
   return (
     <div className="w-48 bg-contain">
-      <img className='bg-contain' alt="image" src={`${IMG_CDN_URL}/${posterPath}`} />
+      <img loading='lazy' className='bg-contain' alt="image" src={`${IMG_CDN_URL}/${posterPath}`} />
     </div>
   );
 }

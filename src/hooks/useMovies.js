@@ -28,7 +28,7 @@ const useMovies = () => {
     }
   };
 
-  const myPopularMovies = async () => {
+  const getMyPopularMovies = async () => {
     try {
       const response = await fetch(
         "https://api.themoviedb.org/3/movie/popular?&page=1",
@@ -41,7 +41,7 @@ const useMovies = () => {
     }
   };
 
-  const topRatedMovies = async () => {
+  const getTopRatedMovies = async () => {
     try {
       const response = await fetch(
         "https://api.themoviedb.org/3/movie/top_rated?&page=1",
@@ -54,7 +54,7 @@ const useMovies = () => {
     }
   };
 
-  const upcomingMovies = async () => {
+  const getUpcomingMovies = async () => {
     try {
       const response = await fetch(
         "https://api.themoviedb.org/3/movie/upcoming?&page=1",
@@ -67,7 +67,7 @@ const useMovies = () => {
     }
   };
 
-  const topRatedSeriesList = async (series_id) => {
+  const getTopRatedSeries = async (series_id) => {
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/tv/top_rated`,
@@ -83,10 +83,10 @@ const useMovies = () => {
   return {
     getNowPlayingMovie,
     getMovieBackgroundTrailer,
-    myPopularMovies,
-    topRatedMovies,
-    upcomingMovies,
-    topRatedSeriesList,
+    getMyPopularMovies,
+    getTopRatedMovies,
+    getUpcomingMovies,
+    getTopRatedSeries,
   };
 };
 

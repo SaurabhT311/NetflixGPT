@@ -50,7 +50,6 @@ const Header = ({ isSignInForm }) => {
   }, []);
 
   const handleGptSearch = () => {
-    // navigate("/gpt-search");
     dispatch(toggleGptSearchview());
   };
 
@@ -62,7 +61,7 @@ const Header = ({ isSignInForm }) => {
   return (
     <>
       <div className="absolute flex py-6 px-8 bg-gradient-to-b from-black z-15 w-full justify-between">
-        <img className="w-36 stroke-red-500" src={IMGNetflixLogo} alt="logo" />
+        <img className="w-36 stroke-red-500" loading="lazy" src={IMGNetflixLogo} alt="logo" />
         {!isSignInForm && (
           <div className="flex gap-4 items-center">
             {showGptSearch && (

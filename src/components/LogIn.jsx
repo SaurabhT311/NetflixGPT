@@ -54,7 +54,7 @@ const LogIn = ({ isSignInForm }) => {
           }).then(() => {
             // Force sign out after signup
             dispatch(setNewAccount(true));
-            navigate("/sign-in");
+            navigate("/");
           });
         })
         .catch((error) => {

@@ -6,12 +6,12 @@ import { RouterProvider } from "react-router-dom";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
-    // {
-    //   path: "/",
-    //   element: <LogIn />,
-    // },
     {
-      path: "/" ? "/sign-in" : "",
+      path: "/",
+      element: <LogIn />,
+    },
+    {
+      path: "/sign-in",
       element: <LogIn isSignInForm={true} />, // pass prop
     },
     {

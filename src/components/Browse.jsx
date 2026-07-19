@@ -1,70 +1,87 @@
-import React, { useEffect } from "react";
-import Header from "./Header";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setNowPlaying, setPopularMovies, setTopRatedMovies, setTopRatedSeries, setUpcomingMovies } from "../utils/movieSlice";
-import useMovies from "../hooks/useMovies";
-import VideoContainer from "./VideoComponent";
+import Header from "./Header";
 import GPTSearch from "./GPTSearch";
+import VideoContainer from "./VideoComponent";
+import useMovies from "../hooks/useMovies";
+
+import {
+  setNowPlaying,
+  setPopularMovies,
+  setTopRatedMovies,
+  setUpcomingMovies,
+  setTopRatedSeries,
+} from "../utils/movieSlice";
 
 const Browse = () => {
   const dispatch = useDispatch();
-  const { getNowPlayingMovie, myPopularMovies, topRatedMovies, upcomingMovies, topRatedSeriesList } = useMovies();
-  const showGptSearch = useSelector((state) => state.gptSlice.showGptSearchView);
 
-  const handleNowPlayingMovie = async () => {
-    try {
-      const response = await getNowPlayingMovie();
-      dispatch(setNowPlaying(response));
-    } catch (error) {}
-  };
+  const {
+    getNowPlayingMovie,
+    getMyPopularMovies,
+    getTopRatedMovies,
+    getUpcomingMovies,
+    getTopRatedSeries,
+  } = useMovies();
 
-  const getMyPopularMovies = async () => {
-    try {
-      const response = await myPopularMovies();
-      dispatch(setPopularMovies(response));
-      console.log("popular movies in browse", response);
-    } catch (error) {}
-  }
+  const showGptSearch = useSelector(
+    (state) => state.gptSlice.showGptSearchView,
+  );
 
-  const getTopRatedMovies = async () => {
-    try {
-      const response = await topRatedMovies();
-      dispatch(setTopRatedMovies(response));
-      console.log("top rated movies in browse", response);
-    } catch (error) {}
-  }
+  const {
+    now_playing,
+    popular_movies,
+    top_rated_movies,
+    upcoming_movies,
+    top_rated_series,
+  } = useSelector((state) => state.movieSlice);
 
-  const getUpcomingMovies = async () => {
-    try {
-      const response = await upcomingMovies();
-      dispatch(setUpcomingMovies(response));
-      console.log("upcoming movies in browse", response);
-    } catch (error) {}
-  }
+  const fetchAndStoreMovies = async (existingData, apiCall, action) => {
+    if (existingData?.length) return;
 
-  const getTopRatedSeries = async () => {
     try {
-      const response = await topRatedSeriesList();
-      dispatch(setTopRatedSeries(response));
-      console.log("top rated series in browse", response);
+      const response = await apiCall();
+      dispatch(action(response));
     } catch (error) {
-      console.log("error in getting top rated series", error);
+      console.error("Failed to fetch data:", error);
     }
   };
 
+  const loadBrowseData = async () => {
+    await Promise.all([
+      fetchAndStoreMovies(now_playing, getNowPlayingMovie, setNowPlaying),
+
+      fetchAndStoreMovies(popular_movies, getMyPopularMovies, setPopularMovies),
+
+      fetchAndStoreMovies(
+        top_rated_movies,
+        getTopRatedMovies,
+        setTopRatedMovies,
+      ),
+
+      fetchAndStoreMovies(
+        upcoming_movies,
+        getUpcomingMovies,
+        setUpcomingMovies,
+      ),
+
+      fetchAndStoreMovies(
+        top_rated_series,
+        getTopRatedSeries,
+        setTopRatedSeries,
+      ),
+    ]);
+  };
+
   useEffect(() => {
-    handleNowPlayingMovie();
-    getMyPopularMovies();
-    getTopRatedMovies();
-    getUpcomingMovies();
-    getTopRatedSeries();
+    loadBrowseData();
   }, []);
 
   return (
-    <div>
+    <>
       <Header />
       {showGptSearch ? <GPTSearch /> : <VideoContainer />}
-    </div>
+    </>
   );
 };
 
