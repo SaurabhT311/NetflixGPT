@@ -4,7 +4,7 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { removeUser } from "../utils/userSlice";
+import { removeUser } from "../store/slices/userSlice";
 
 const MyProfile = ({ userPopup, setUserPopup, popupRef }) => {
   const userDetails = useSelector(((state) => state.userSlice.user) || {});

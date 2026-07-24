@@ -3,12 +3,12 @@ import { IMGNetflixLogo, IMGUserIcon } from "../assets";
 import MyProfile from "./MyProfile";
 import { auth } from "../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUser, setUser } from "../utils/userSlice";
+import { removeUser, setUser } from "../store/slices/userSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { toggleGptSearchview } from "../utils/gptSlice";
-import { SUPPORTED_LANGUAGE } from "../utils/constants";
-import { changeLanguage } from "../utils/languageSlice";
+import { toggleGptSearchview } from "../store/slices/gptSlice";
+import { SUPPORTED_LANGUAGE } from "../constants/constants";
+import { changeLanguage } from "../store/slices/languageSlice";
 
 const Header = ({ isSignInForm }) => {
   const [userPopup, setUserPopup] = useState(false);

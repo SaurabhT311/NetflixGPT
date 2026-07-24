@@ -9,7 +9,7 @@ import {
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setNewAccount, setUser } from "../utils/userSlice";
+import { setNewAccount, setUser } from "../store/slices/userSlice";
 import { IMGBackgroundImg } from "../assets";
 import { signOut } from "firebase/auth";
 

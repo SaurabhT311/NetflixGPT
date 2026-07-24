@@ -1,4 +1,4 @@
-import { API_OPTIONS } from "../utils/constants";
+import { API_OPTIONS } from "../constants/constants";
 
 const useMovies = () => {
   const getNowPlayingMovie = async () => {

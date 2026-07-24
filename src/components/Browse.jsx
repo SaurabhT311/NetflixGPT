@@ -11,7 +11,7 @@ import {
   setTopRatedMovies,
   setUpcomingMovies,
   setTopRatedSeries,
-} from "../utils/movieSlice";
+} from "../store/slices/movieSlice";
 
 const Browse = () => {
   const dispatch = useDispatch();

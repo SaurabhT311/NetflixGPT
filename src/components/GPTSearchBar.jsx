@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useRef as useReactRef } from "react";
-import language from "../utils/langConstant";
+import language from "../constants/langConstant";
 import { useDispatch, useSelector } from "react-redux";
 import geminiApi from "../utils/gemini";
-import { API_OPTIONS } from "../utils/constants";
-import { addGeminiMovieResult } from "../utils/gptSlice";
+import { API_OPTIONS } from "../constants/constants";
+import { addGeminiMovieResult } from "../store/slices/gptSlice";
 
 const GPTSearchBar = () => {
   const lang = useSelector((state) => state.languageSlice.currentLanguage);
